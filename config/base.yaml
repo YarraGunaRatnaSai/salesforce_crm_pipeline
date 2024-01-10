@@ -1,0 +1,18 @@
+app_name: SF Data Integration
+default_role: user
+log_file: logs/app.log
+kafka:
+  broker_url: localhost:9092
+databases:
+  postgres:
+    host: localhost
+    port: 5432
+    user: admin
+    password: admin
+    dbname: sf_data_integration
+  mongo:
+    host: localhost
+    port: 27017
+etl:
+  default_source: database
+  default_target: salesforce

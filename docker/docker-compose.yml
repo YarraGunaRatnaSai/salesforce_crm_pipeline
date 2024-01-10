@@ -1,0 +1,63 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - "5000:5000" # Exposing Flask UI port
+    depends_on:
+      - kafka
+      - mongo
+      - postgres
+    environment:
+      - KAFKA_BROKER_URL=kafka:9092 # Ensure Kafka uses container name for communication
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka:9092"
+      KAFKA_BROKER_ID: "1"
+    ports:
+      - "9092:9092"
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "9092"]
+      interval: 30s
+      retries: 3
+      start_period: 30s
+      timeout: 10s
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./databases/mongo/init.js:/docker-entrypoint-initdb.d/init.js:ro
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: integration_admin
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./databases/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+
+  airflow:
+    image: puckel/docker-airflow:1.10.9
+    container_name: airflow
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./airflow_dags:/usr/local/airflow/dags
