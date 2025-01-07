@@ -1,0 +1,19 @@
+version: "3"
+services:
+  app:
+    image: sf_data_integration:dev
+    build: .
+    environment:
+      - FLASK_ENV=development
+      - DATABASE_URL=postgres://user:password@localhost/dbname
+      - SALESFORCE_CREDENTIALS=/path/to/salesforce_credentials
+    volumes:
+      - ./sf_data_integration:/app
+    ports:
+      - "5000:5000"
+    networks:
+      - sf_network
+
+networks:
+  sf_network:
+    driver: bridge

@@ -1,0 +1,14 @@
+{% extends "base.html" %} {% block content %}
+<h2>User Dashboard</h2>
+<p>Welcome, {{ user.username }}</p>
+<div class="dashboard-content">
+  <h3>Recent Activities</h3>
+  <ul>
+    {% for activity in activities %}
+    <li>{{ activity }}</li>
+    {% endfor %}
+  </ul>
+  <h3>Progress Overview</h3>
+  <div id="progress-chart"></div>
+</div>
+{% endblock %}

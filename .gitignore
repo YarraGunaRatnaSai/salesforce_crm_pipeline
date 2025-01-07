@@ -1,0 +1,9 @@
+# Module File structure
+structure.txt
+
+# Ignore .env files to keep sensitive data secure
+# Uncomment the below line to ignore .env files
+# .env
+
+__pycache__
+venv/
