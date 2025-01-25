@@ -1,45 +1,61 @@
-# salesforce_integration_dashboard
-Data integration with salesforce data cloud and a user interface to perform and view operationa
-=======
-# SF Data Integration Project
+# Salesforce CRM Data Pipeline
 
-This project integrates Salesforce data with a PostgreSQL and MongoDB backend, utilizing Kafka for event-driven architecture. It includes a Flask-based UI dashboard for user authentication and interaction with the integration processes.
+Data integration with Salesforce Data Cloud and a user interface to perform and view operations
 
 ## Table of Contents
-
-- [Project Overview](#project-overview)
+- [Overview](#overview)
+- [Objective](#objective)
 - [Technologies Used](#technologies-used)
+- [Key Features](#key-features)
 - [Setup Instructions](#setup-instructions)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Running the Application](#running-the-application)
-- [Configuration](#configuration)
-  - [Environment Variables](#environment-variables)
 - [Folder Structure](#folder-structure)
-- [Contributing](#contributing)
-- [License](#license)
+- [Future Enhancements](#future-enhancements)
 
-## Project Overview
+## Overview
 
-This project is designed to facilitate the integration of Salesforce data into a backend architecture with PostgreSQL and MongoDB databases. It uses Kafka for managing data integration events. The application includes an authentication system, a dashboard for data visualization, and an admin interface.
+The Salesforce CRM Data Pipeline project automates the extraction, transformation, and loading (ETL) of Salesforce CRM data into PostgreSQL and MongoDB databases. The project uses Kafka for event-driven architecture and integrates with a Flask-based UI dashboard for managing and visualizing the data pipeline
+
+## Objective
+
+To develop an efficient data pipeline that:
+- Automates the ETL process for Salesforce CRM data
+- Provides real-time data streaming and processing using Kafka
+- Visualizes data through an interactive UI dashboard
+- Supports decision-making by integrating structured (PostgreSQL) and unstructured (MongoDB) data storage
 
 ## Technologies Used
+- **Airflow**: Orchestrates the ETL workflow
+- **Kafka**: Event streaming platform to handle data integration events
+- **PostgreSQL**: Relational database for structured data
+- **MongoDB**: NoSQL database for unstructured data
+- **Flask**: Web framework for building the dashboard and authentication system
+- **SQLAlchemy**: ORM for PostgreSQL database integration
+- **Docker**: Containerization of the application for easy deployment and scalability
+- **Python**: Backend programming language
+- **PyYAML**: For loading environment configurations from YAML files
 
-- **Flask**: Web framework for building the dashboard and authentication system.
-- **SQLAlchemy**: ORM for PostgreSQL database integration.
-- **PostgreSQL**: Relational database used for storing structured data.
-- **MongoDB**: NoSQL database for unstructured data.
-- **Kafka**: Event streaming platform to handle data integration events.
-- **Docker**: Containerization of the application for easy deployment and scalability.
-- **Python**: Backend programming language.
-- **PyYAML**: For loading environment configurations from YAML files.
+## Key Features
+
+### 1. End-to-End ETL Pipeline
+- Extract data from various sources
+- Transform data to match organizational requirements
+- Load data into Salesforce Data Cloud
+
+### 2. Real-Time Data Streaming
+- Kafka-based architecture ensures timely data integration and processing
+
+### 3. User Interface Dashboard
+- Manage pipeline configurations
+- Monitor the status of data jobs
+- Visualize data insights with user-friendly charts and tables
+
+### 4. Database Integration
+- PostgreSQL for structured data storage (e.g., customer records, transactions)
+- MongoDB for unstructured data (e.g., logs, metadata)
 
 ## Setup Instructions
 
 ### Prerequisites
-
-Ensure you have the following installed:
-
 - Python 3.9+
 - Docker and Docker Compose
 - PostgreSQL and MongoDB (if not using Docker containers)
@@ -48,143 +64,112 @@ Ensure you have the following installed:
 ### Installation
 
 1. **Clone the repository:**
-
-   ```bash
-   git clone https://github.com/yourusername/sf_data_integration_project.git
-   cd sf_data_integration_project
-   ```
+    ```bash
+    git clone https://github.com/yourusername/Salesforce_CRM_DataPipeline.git
+    cd Salesforce_CRM_DataPipeline
+    ```
 
 2. **Create and activate a virtual environment:**
-   '''bash
-   python3 -m venv venv
-   source venv/bin/activate # On Windows, use `venv\Scripts\activate`
-   '''
+    ```bash
+    python3 -m venv venv
+    source venv/bin/activate # On Windows, use `venv\Scripts\activate`
+    ```
 
 3. **Install dependencies:**
-   Install the required Python packages:
-   '''bash
-   pip install -r requirements.txt
-   '''
+    ```bash
+    pip install -r requirements.txt
+    ```
 
 4. **Set up environment variables:**
-   Create a .env file in the root directory with the following content:
-   '''dotenv
+    Create a .env file in the root directory with the following content:
+    ```dotenv
+    # Database configurations
+    DB_HOST=localhost
+    DB_PORT=5432
+    DB_USER=admin
+    DB_PASSWORD=admin
+    DB_NAME=sf_data_integration
 
-   # Database configurations
+    # Kafka configurations
+    KAFKA_BROKER_URL=kafka:9092
+    DATA_INTEGRATION_TOPIC=data_integration_events
 
-   DB_HOST=localhost
-   DB_PORT=5432
-   DB_USER=admin
-   DB_PASSWORD=admin
-   DB_NAME=sf_data_integration
+    # Salesforce configurations
+    SALESFORCE_API_URL=https://api.salesforce.com
+    SALESFORCE_CLIENT_ID=your-client-id
+    SALESFORCE_CLIENT_SECRET=your-client-secret
+    SALESFORCE_USERNAME=your-username
+    SALESFORCE_PASSWORD=your-password
 
-   # Kafka configurations
-
-   KAFKA_BROKER_URL=kafka:9092
-   DATA_INTEGRATION_TOPIC=data_integration_events
-
-   # Salesforce configurations
-
-   SALESFORCE_API_URL=https://api.salesforce.com
-   SALESFORCE_CLIENT_ID=your-client-id
-   SALESFORCE_CLIENT_SECRET=your-client-secret
-   SALESFORCE_USERNAME=your-username
-   SALESFORCE_PASSWORD=your-password
-
-   # UI Dashboard
-
-   FLASK_APP=ui_dashboard.app
-   FLASK_ENV=development
-   SECRET_KEY=supersecretkey
-   '''
+    # UI Dashboard
+    FLASK_APP=ui_dashboard.app
+    FLASK_ENV=development
+    SECRET_KEY=supersecretkey
+    ```
 
 ### Running the Application
 
 1. **Run Docker Containers:**
-   If you want to run the application with Docker, use the following command to start all services:
-   '''bash
-   docker-compose up --build
-   '''
-   This will start:
-   PostgreSQL
-   MongoDB
-   Kafka
-   Airflow (if needed)
-   The Flask app (UI Dashboard)
+    ```bash
+    docker-compose up --build
+    ```
+    This will start:
+    - PostgreSQL
+    - MongoDB
+    - Kafka
+    - Airflow (if needed)
+    - The Flask app (UI Dashboard)
 
 2. **Run Flask Application:**
-   If you're running the Flask app outside Docker, use:
-   '''bash
-   flask run
-   '''
-   You can now access the UI dashboard at http://localhost:5000.
+    ```bash
+    flask run
+    ```
+    You can now access:
+    - UI dashboard at http://localhost:5000
+    - Airflow UI at http://localhost:8080
 
-## Configuration
-
-The configuration files are located in the config/ directory, where environment-specific settings (e.g., development.yaml, production.yaml) are stored.
-
-### Environment Variables
-
-The following environment variables can be configured:
-DB_HOST: Host for the PostgreSQL database.
-DB_PORT: Port for PostgreSQL.
-DB_USER: Username for PostgreSQL.
-DB_PASSWORD: Password for PostgreSQL.
-DB_NAME: Name of the PostgreSQL database.
-KAFKA_BROKER_URL: URL for the Kafka broker.
-DATA_INTEGRATION_TOPIC: Kafka topic for data events.
-SALESFORCE_API_URL: Salesforce API URL.
-SALESFORCE_CLIENT_ID: Salesforce client ID.
-SALESFORCE_CLIENT_SECRET: Salesforce client secret.
-SALESFORCE_USERNAME: Salesforce username.
-SALESFORCE_PASSWORD: Salesforce password.
-FLASK_APP: Flask app entry point.
-FLASK_ENV: Flask environment (development, production).
-SECRET_KEY: Secret key for Flask sessions.
-
-### Folder Structure
-
-'''plaintext
-sf_data_integration_project/
+## Folder Structure
+```plaintext
+Salesforce_CRM_DataPipeline/
 │
-├── config/
-│ ├── **\_init**.py
-│ ├── base.yaml
-│ ├── development.yaml
-│ └── production.yaml
+├── airflow_dags/           # Airflow DAGs for ETL pipeline
+├── cli_backend/            # Backend logic for connectors and data processing
+│   ├── __init__.py
+│   ├── requirements.txt
+│   └── setup.py
 │
-├── cli_backend/
-│ ├── **init**.py
-│ ├── requirements.txt
-│ └── setup.py
+├── config/                 # Configuration files for different environments
+│   ├── __init__.py
+│   ├── base.yaml
+│   ├── development.yaml
+│   └── production.yaml
 │
-├── ui_dashboard/
-│ ├── **init**.py
-│ ├── app.py
-│ ├── auth/
-│ │ ├── **init**.py
-│ │ ├── models.py
-│ │ └── routes.py
-│ ├── dashboard/
-│ │ ├── **init**.py
-│ │ ├── helpers.py
-│ │ └── routes.py
-│ └── templates/
-│ ├── base.html
-│ └── dashboard.html
+├── databases/              # Initialization scripts for MongoDB and PostgreSQL
+├── docker/                 # Docker configuration files
+│   ├── Dockerfile
+│   └── docker-compose.yml
 │
-├── docker/
-│ ├── Dockerfile
-│ └── docker-compose.yml
+├── examples/               # Example integration scripts
+├── kafka/                  # Kafka producer and consumer scripts
+├── ui_dashboard/           # Flask-based UI dashboard
+│   ├── __init__.py
+│   ├── app.py
+│   ├── auth/
+│   │   ├── __init__.py
+│   │   ├── models.py
+│   │   └── routes.py
+│   ├── dashboard/
+│   │   ├── __init__.py
+│   │   ├── helpers.py
+│   │   └── routes.py
+│   └── templates/
+│       ├── base.html
+│       └── dashboard.html
 │
 └── requirements.txt
-'''
+```
 
-## Contributing
-
-Feel free to submit issues and pull requests. When contributing, please follow the established code style and ensure your changes pass existing tests.
-
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
->>>>>>> a88209f (Initial Commit)
+## Future Enhancements
+1. Integrate machine learning models for predictive analytics
+2. Implement enhanced monitoring and alerting for the pipeline
+3. Support multi-region deployments using cloud services
